@@ -7,11 +7,18 @@ http://simpson.edu/computer-science/
 Show everything we can pull off the joystick
 """
 import pygame
+import sys
+sys.path += ['/home/jay/python/python-examples/dev/StateMachine', '/home/jay/python/transitions']
+from transitions import Machine
+import random
+from robotFSM import MobileNest
  
 # Define some colors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
  
+ # Define controller button mapping
+controller_btn = {"A":0, "B":1, "X":2, "Y":3, "LB":4, "RB":5, "BACK":6, "START":7, "MODE":8, "LTHUMB":9, "RTHUMB":10} 
  
 class TextPrint(object):
     """
@@ -66,10 +73,13 @@ pygame.joystick.init()
  
 # Get ready to print
 textPrint = TextPrint()
+
+#------Finite State Machine setup-------
+nest123 = MobileNest("Nest123")
  
 # -------- Main Program Loop -----------
 while not done:
-    # EVENT PROCESSING STEP
+    # EVENT PROCESSING
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
@@ -77,10 +87,38 @@ while not done:
         # Possible joystick actions: JOYAXISMOTION JOYBALLMOTION JOYBUTTONDOWN
         # JOYBUTTONUP JOYHATMOTION
         if event.type == pygame.JOYBUTTONDOWN:
-            print("Joystick button pressed.")
+            print("Joystick button pressed")
         if event.type == pygame.JOYBUTTONUP:
-            print("Joystick button released.")
- 
+            print("Joystick button released")
+
+        # STATE MACHINE CONTROL STEP
+        CURRENT_STATE = nest123.state
+        joystick = pygame.joystick.Joystick(0)
+        joystick.init()
+
+        if CURRENT_STATE == 'charging':
+            #check if we're fully charged yet.
+            if joystick.get_button(controller_btn["X"]) == 1:
+                nest123.fully_charged()
+
+        elif CURRENT_STATE == 'waiting_for_trajectory':
+            #do the wait for nav thing
+            if joystick.get_button(controller_btn["B"]) == 1:
+                nest123.received_trajectory()
+
+        elif CURRENT_STATE == 'navigating_trajectory':
+            #do the nav thing
+            if joystick.get_button(controller_btn["RB"]) == 1:
+                nest123.reached_charging_station()
+            elif joystick.get_button(controller_btn["A"]) == 1:
+                nest123.reached_end_of_trajectory()
+
+        elif CURRENT_STATE == 'scheduling_re-charge_stop':
+            #do the reschedule thing
+            if joystick.get_button(controller_btn["LB"]) == 1:
+                nest123.recharge_scheduled()
+
+
     # DRAWING STEP
     # First, clear the screen to white. Don't put other drawing commands
     # above this, or they will be erased with this command.
@@ -137,6 +175,11 @@ while not done:
         textPrint.unindent()
  
         textPrint.unindent()
+
+        # Print all state machine values and variables here
+        textPrint.print(screen, "")
+        textPrint.print(screen, "Current State: {}".format(nest123.state))
+
  
     # ALL CODE TO DRAW SHOULD GO ABOVE THIS COMMENT
  
