@@ -2,10 +2,10 @@
 #For global modules:
 import sys
 
-if '/home/jay/python/python-examples/modules' not in sys.path:
-	sys.path.append('/home/jay/python/python-examples/modules')
+if '/home/pi/Documents/Python/python-examples/modules' not in sys.path:
+	sys.path.append('/home/pi/Documents/Python/python-examples/modules')
 
 import priming as p
 
-print p.checkIfPrime(13)
+print(p.checkIfPrime(13))
 

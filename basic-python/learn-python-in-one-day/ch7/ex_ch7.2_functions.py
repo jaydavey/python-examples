@@ -1,4 +1,5 @@
 #def functionName(list of parameters):
+	#"function docstring"
 	#code detailing what the function should do
 	#return [expression]
 
@@ -13,7 +14,7 @@ def checkIfPrime (numberToCheck):
 			return False
 		return True
 
-print checkIfPrime(13)
+print(checkIfPrime(13))
 
 
 #assigning default values to formal arguments
@@ -22,17 +23,17 @@ def someFunction(a,b,c=1,d=2,e=3):
 	print(a,b,c,d,e)
 	return None
 
-print someFunction(4,5)
+print(someFunction(4,5))
 
 
-#Non key worded arguments (variable length argument list)
+#Non key worded variable length argument list (variable length argument list)
 def addNumbers(*num):
 	sum = 0
 	for i in num:
 		sum = sum + i
 	print(sum)
 
-print addNumbers(1,2,3,4,5)
+print(addNumbers(1,2,3,4,5))
 
 
 #key worded arguments (passing dicts to functions)
@@ -40,4 +41,4 @@ def printMemberAge(**age):
 	for i,j in age.items():
 		print("Name = %s, Age = %s" %(i,j))
 
-print printMemberAge(Peter = 5, John = 7, Yvonne = 10)
+print(printMemberAge(Peter = 5, John = 7, Yvonne = 10))

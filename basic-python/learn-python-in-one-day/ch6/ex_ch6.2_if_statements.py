@@ -1,4 +1,5 @@
-userInput = raw_input('Enter 1 or 2: ')
+#python3+
+userInput = input('Enter 1 or 2: ')
 
 if userInput == "1":
 	print("you hit #1")
