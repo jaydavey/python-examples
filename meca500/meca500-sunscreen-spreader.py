@@ -1,9 +1,16 @@
-# this program is to generate a meca250 trajectory
+# this program is to generate a meca500 trajectory
 import numpy as np
 import matplotlib.pyplot as plt
 
-#create a series of timestamps to define points in time
 t_resolution = 0.010 #timestamp every 0.1 seconds
+
+#sunscreen initial dots
+spread = 16
+x_ss = [-spread, -spread, -spread,  0.0, 0.0,   0.0,  spread, spread, spread]
+y_ss = [-spread,   0.0,  spread, spread, 0.0, -spread, -spread,  0.0, spread]
+
+
+#define the length of the segments of time (in seconds) where the path changes direction
 t0_len = 0.5 #seconds of trajectory
 t1_len = 5.0 #seconds of trajectory
 t2_len = 1.0 #seconds of trajectory
@@ -13,10 +20,9 @@ t5_len = 5.0 #seconds of trajectory
 t6_len = 1.0 #seconds of trajectory
 t7_len = 5.0 #seconds of trajectory
 
-#sunscreen initial dots
-spread = 16
-x_ss = [-spread, -spread, -spread,  0.0, 0.0,   0.0,  spread, spread, spread]
-y_ss = [-spread,   0.0,  spread, spread, 0.0, -spread, -spread,  0.0, spread]
+# #cumulative time
+# figure(1)
+# plt.axvline(x=t0_len,'-r')
 
 
 t0 = np.multiply(list(range(int(t0_len/t_resolution))), t_resolution) 
@@ -36,9 +42,6 @@ yp1_start = -22
 xp1_end = -20
 yp1_end = 22
 
-xp1 = [xp1_start]*len(t1)
-yp1 = np.multiply(t1-t0_len,8)+yp1_start
-
 A=5
 B=xp1_start
 w1=np.multiply(4,np.pi)
@@ -55,6 +58,17 @@ xp2_start = xp1_end
 yp2_start = yp1_end
 xp2_end = -8
 yp2_end = yp1_end
+
+A=5
+B=xp2_start
+w1=np.multiply(0.5,np.pi)
+w2=np.multiply(0.5,np.pi)
+C=2.5
+D=2.5
+E=yp2_start
+
+x2 = np.multiply(A,np.cos(np.multiply(w1,t1-t0_len)))+np.multiply(D,t1-t0_len)+B
+y2 = np.multiply(C,-np.sin(np.multiply(w2,t1-t0_len)))+E
 
 #path3
 xp3_start = xp2_end
@@ -87,13 +101,15 @@ xp7_end = xp6_end
 yp7_end = yp5_start
 
 
-#plot
+#plot of x,y path
+plt.figure(100)
 plt.plot([-25,-25,25,25,-25],[-25,25,25,-25,-25],'g-')
 plt.plot([-24,-24,24,24,-24],[-24,24,24,-24,-24],'r-')
 plt.plot(x_ss,y_ss,'b.')
 plt.plot([xp1_start,xp2_start,xp3_start,xp4_start,xp5_start,xp6_start,xp7_start,xp7_end],[yp1_start,yp2_start,yp3_start,yp4_start,yp5_start,yp6_start,yp7_start,yp7_end],'b-')
 plt.ylabel('Y (mm)')
 plt.xlabel('X (mm)')
-plt.plot(x1,y1,'r-')
+plt.plot(x1,y1,'c-')
+plt.plot(x2,y2,'m-')
 plt.axis('equal')
 plt.show()
