@@ -20,7 +20,7 @@ y_sub_HD6 = [-24,24,24,-24,-24]
 
 #x,y nominal linear paths
 xl = [-16, -20, -20, -8,  -8,   8,  8,  20,  20]
-yl = [-16, -22,  22, 22, -22, -22, 22,  22, -22]
+yl = [-16, -20,  20, 20, -20, -20, 20,  20, -20]
 
 #sunscreen initial dots
 spread = 16
@@ -29,7 +29,8 @@ y_ss = [-spread,   0.0,  spread, spread, 0.0, -spread, -spread,  0.0, spread]
 
 ##--Designing the x, y paths as functions of time
 #define the times between trajectory motion pattern changes
-t_len = [1, 5, 1, 5, 1.5, 5, 1, 5]
+#total time for first spiral pass = 87.63
+t_len = [2.3, 18.3, 4.0, 18.3, 4.0, 18.3, 4.0, 18.3]
 tl = np.concatenate((np.array([0]),np.cumsum(t_len)), axis=0)
 
 #calculate the nominal corner to corner trajectory velociites
@@ -52,6 +53,26 @@ plt.xlabel('X (mm)')
 plt.axis('equal')
 plt.show(block=False)
 
+# p0
+t0 = np.arange(0,2.3,0.01)
+x0c = 6*np.cos(np.deg2rad((np.multiply(t0,225/2.3)+45)))
+y0c = 6*np.sin(np.deg2rad((np.multiply(t0,225/2.3)+45)))
+x0l = np.multiply(t0,-4/2.3)-16
+y0l = np.multiply(t0,-4/2.3)-16
+x0 = x0c + x0l
+y0 = y0c + y0l
+plt.plot(x0, y0,'k-')
+# p1
+t1 = np.arange(0,18.3,0.01)
+x1c = 6*np.cos(np.deg2rad((np.multiply(t1,9*360/18.3)+270)))
+y1c = 6*np.sin(np.deg2rad((np.multiply(t1,9*360/18.3)+270)))
+x1l = np.multiply(t1,0)-20
+y1l = np.multiply(t1,40/18.3)-20
+x1 = x1c + x1l
+y1 = y1c + y1l
+plt.plot(x1, y1,'k-')
+
+
 ##--Plot of x, y paths vs time in seconds
 plt.figure(1)
 for i in list(range(tl.size)):
@@ -61,4 +82,3 @@ for i in list(range(tl.size)):
 plt.ylabel('nominal linear velocity (mm/s)')
 plt.xlabel('time (s)')
 plt.show(block=False)
-
