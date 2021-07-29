@@ -29,8 +29,10 @@ y_ss = [-spread,   0.0,  spread, spread, 0.0, -spread, -spread,  0.0, spread]
 
 ##--Designing the x, y paths as functions of time
 #define the times between trajectory motion pattern changes
-#total time for first spiral pass = 87.63
-t_len = [2.3, 18.3, 4.0, 18.3, 4.0, 18.3, 4.0, 18.3]
+#total time for first spiral pass = 11 seconds
+#total distance for nominal spiral pass = 205.657 mm
+#nominal path speed = 18.6961 mm/second
+t_len = [0.3025, 2.1395, 0.6418, 2.1395, 0.8558, 2.1395, 0.6418, 2.1395]
 tl = np.concatenate((np.array([0]),np.cumsum(t_len)), axis=0)
 
 #calculate the nominal corner to corner trajectory velociites
@@ -42,43 +44,21 @@ for i in list(range(tl.size-1)):
 dtl = np.diff(tl)
 vl = np.divide(dxl,dtl)
 
-##--Plot x, y paths in mm
-plt.figure(100)
-plt.plot(x_HD6, y_HD6,'g-')
-plt.plot(x_sub_HD6, y_sub_HD6,'r-')
-plt.plot(x_ss,y_ss,'b.')
-plt.plot(xl,yl,'b--')
-plt.ylabel('Y (mm)')
-plt.xlabel('X (mm)')
-plt.axis('equal')
 plt.show(block=False)
-
-# p0
-t0 = np.arange(0,2.3,0.01)
-x0c = 6*np.cos(np.deg2rad((np.multiply(t0,225/2.3)+45)))
-y0c = 6*np.sin(np.deg2rad((np.multiply(t0,225/2.3)+45)))
-x0l = np.multiply(t0,-4/2.3)-16
-y0l = np.multiply(t0,-4/2.3)-16
-x0 = x0c + x0l
-y0 = y0c + y0l
-plt.plot(x0, y0,'k-')
-# p1
-t1 = np.arange(0,18.3,0.01)
-x1c = 6*np.cos(np.deg2rad((np.multiply(t1,9*360/18.3)+270)))
-y1c = 6*np.sin(np.deg2rad((np.multiply(t1,9*360/18.3)+270)))
-x1l = np.multiply(t1,0)-20
-y1l = np.multiply(t1,40/18.3)-20
-x1 = x1c + x1l
-y1 = y1c + y1l
-plt.plot(x1, y1,'k-')
-
-
-##--Plot of x, y paths vs time in seconds
-plt.figure(1)
-for i in list(range(tl.size)):
-    plt.axvline(x=tl[i],color='red')
-    if i<tl.size-1:
-        plt.plot([tl[i], tl[i+1]],[vl[i], vl[i]],'c-')
-plt.ylabel('nominal linear velocity (mm/s)')
-plt.xlabel('time (s)')
-plt.show(block=False)
+t = 0;
+while(t<1000):
+    ##--Plot x, y paths in mm
+    plt.figure(100)
+    plt.plot(x_HD6, y_HD6,'g-')
+    plt.plot(x_sub_HD6, y_sub_HD6,'r-')
+    plt.plot(x_ss,y_ss,'b.')
+    plt.plot(xl,yl,'b--')
+    plt.ylabel('Y (mm)')
+    plt.xlabel('X (mm)')
+    plt.axis('equal')
+    plt.show(block=False)
+    plt.draw()
+    t = t+1
+    print(t)
+    
+    
