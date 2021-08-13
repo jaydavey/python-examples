@@ -15,7 +15,7 @@ t_int = np.cumsum(t_len)
 #total distance for spiral = 1649.23 mm
 #nominal path speed = 18.6961 mm/second
 t_total = 11.0 #seconds
-t_res = 0.01 #resolution of output
+t_res = 0.025 #resolution of output
 d_total = 205.657 #mm
 v_l_ave = d_total/t_total
 
@@ -129,3 +129,9 @@ for i in list(range(x_t.size-1)):
     
 d_path_total = np.max(np.cumsum(d_t))
 v_path_ave = d_path_total/t_total #mm/s
+
+f = open('meca_gui_script_spiral.txt', 'w')
+with open('meca_gui_script_spiral.txt', 'w') as f:
+    for i in list(range(x_t.size)):
+        f.write(str('MoveLin('+str(round(x_t[i],3))+', '+str(round(y_t[i],3))+', 0, 0, 0, 0)\n'))
+f.close()

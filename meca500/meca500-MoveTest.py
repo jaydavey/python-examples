@@ -3,7 +3,7 @@ Program = """SetTRF(0,0,50,180,0,90)
                 SetBlending(50)
                 SetCartAcc(100)
                 SetCartAngVel(150)
-                SetCartLinVel(400)
+                SetCartLinVel(1000)
                 SetJointAcc(150)
                 SetJointVel(100)
                 MoveJoints(0,0,0,0,0,0)
@@ -20,7 +20,7 @@ movements = Program.split("\n")
 import MecademicRobot
 
 def AutoRepair(robot):
-    if(robot.isInError()):
+    if(robot.is_in_error()):
         robot.ResetError()
     elif(robot.GetStatus()['Paused']==1):
         robot.ResumeMotion()
@@ -29,14 +29,14 @@ robot = MecademicRobot.RobotController('192.168.1.174')
 robot.connect()
 robot.ActivateRobot()
 robot.home()
-robot.SetWRF(200,0,0,0,0,-90)
-robot.SetTRF(0,0,50,180,0,90)
-robot.SetBlending(100)
-robot.SetCartAcc(100)     #600 %     max
-robot.SetCartAngVel(300)  #300 deg/s max
-robot.SetCartLinVel(500)  #1000 mm/s max
-robot.SetJointAcc(150)    #150 %     max
-robot.SetJointVel(100)    #100 %     max
+# robot.SetWRF(200,0,0,0,0,-90)
+# robot.SetTRF(0,0,50,180,0,90)
+# robot.SetBlending(100)
+# robot.SetCartAcc(100)     #600 %     max
+# robot.SetCartAngVel(300)  #300 deg/s max
+# robot.SetCartLinVel(500)  #1000 mm/s max
+# robot.SetJointAcc(150)    #150 %     max
+# robot.SetJointVel(100)    #100 %     max
 # robot.StartProgram(1)
 # robot.SetEOB(1)
 # robot.SetEOM(1)
