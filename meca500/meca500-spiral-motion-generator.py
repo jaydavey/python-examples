@@ -133,5 +133,5 @@ v_path_ave = d_path_total/t_total #mm/s
 f = open('meca_gui_script_spiral.txt', 'w')
 with open('meca_gui_script_spiral.txt', 'w') as f:
     for i in list(range(x_t.size)):
-        f.write(str('MoveLin('+str(round(x_t[i],3))+', '+str(round(y_t[i],3))+', 0, 0, 0, 0)\n'))
+        f.write(str('MovePose('+str(round(x_t[i],3))+', '+str(round(y_t[i],3))+', 0, 0, 0, 0)\n'))
 f.close()
